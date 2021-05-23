@@ -39,11 +39,9 @@ export default class App extends React.Component {
         <Row gutter={16}>
           <Col span={12}>
             <Statistic title="Имя:" value={user.name} />
-            {/* <p>Имя: {name}</p> */}
           </Col>
           <Col span={12}>
             <Statistic title="Почта:" value={user.email} />
-            {/* <p>Возраст: {age}</p> */}
           </Col>
         </Row>
 
