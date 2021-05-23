@@ -2,35 +2,47 @@ import { Col, Row, Statistic } from "antd";
 import React from "react";
 import "./App.css";
 
-function App() {
-  const USERS = [
-    { name: "Ivan", age: "10" },
-    { name: "Roman", age: "20" },
-    { name: "Sveta", age: "30" },
-    { name: "Vasya", age: "30" },
-    { name: "Katya", age: "30" },
-    { name: "Dima", age: "30" },
-    { name: "Igor", age: "30" },
-    { name: "Nikita", age: "30" },
-    { name: "Stepa", age: "30" },
-    { name: "Stas", age: "30" },
-    { name: "Artem", age: "30" },
-    { name: "Natalia", age: "30" },
-    { name: "Max", age: "30" },
-    { name: "Vova", age: "30" },
-    { name: "Lucy", age: "30" },
-    { name: "German", age: "30" },
-  ];
-  const getUser = ({ name, age }, key) => {
+export default class App extends React.Component {
+  timer;
+  state = { USERS: [] };
+  componentDidMount() {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+        this.setState({ USERS: json });
+      });
+    this.timer = setInterval(() => {
+      console.log("setInterval()");
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+
+  render() {
+    console.log("render()");
+    return (
+      <div className="App">
+        <div>
+          {this.state.USERS?.map((user, key) => this.getUser(user, key))}
+        </div>
+      </div>
+    );
+  }
+
+  getUser = (user, key) => {
     return (
       <div key={key.toString()}>
         <Row gutter={16}>
           <Col span={12}>
-            <Statistic title="Имя:" value={name} />
+            <Statistic title="Имя:" value={user.name} />
             {/* <p>Имя: {name}</p> */}
           </Col>
           <Col span={12}>
-            <Statistic title="Возраст:" value={age} />
+            <Statistic title="Почта:" value={user.email} />
             {/* <p>Возраст: {age}</p> */}
           </Col>
         </Row>
@@ -39,12 +51,4 @@ function App() {
       </div>
     );
   };
-
-  return (
-    <div className="App">
-      <div>{USERS.map((user, key) => getUser(user, key))}</div>
-    </div>
-  );
 }
-
-export default App;
